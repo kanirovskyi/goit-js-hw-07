@@ -31,24 +31,23 @@ imagesContainer.addEventListener("click", openModal);
 // функция открытия модалки
 function openModal(event) {
   event.preventDefault();
-  const isClickable = event.target.classList.contains("gallery__image");
-  if (!isClickable) {
+
+  const dataSourse = event.target.dataset.source;
+  if (!dataSourse) {
     return
   }
-
-  if (event.target) {
-    createModalImage();
-  }
-}
-// функция создания Большой картинка в модалке
-function createModalImage() {
-  const instance = basicLightbox.create(`
-  <img width="1400" height="900" src="${event.target.dataset.source}">
-  `);
+  
+  instance.element().querySelector("img").src = dataSourse;
   instance.show();
-
   document.addEventListener("keydown", closeModalImage);
 }
+
+// функция создания Большой картинка в модалке
+  const instance = basicLightbox.create(`
+  <img width="1400" height="900" src=" ">
+  `, {onShow: (instance) => window.addEventListener("click", openModal),
+		onClose: (instance) => window.removeEventListener("click", openModal)});
+  
 // функция закрытия модалки и удаления слушателя событий
 function closeModalImage(event) {
   const escKey = 'Escape';
@@ -58,6 +57,7 @@ function closeModalImage(event) {
     document.removeEventListener("keydown", closeModalImage);
   }
 }
+
 // функция удаления Большой картинки в модалке
 function deleteModalImage() {
   const instance = document.querySelector('.basicLightbox--visible');
